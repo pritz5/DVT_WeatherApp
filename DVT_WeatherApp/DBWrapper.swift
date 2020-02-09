@@ -11,11 +11,13 @@ import SQLite3
 
 class DBWrapper: NSObject {
 
+    //MARK: VARIABLES
     var nameArr = [String]()
     var latArr = [String]()
     var lonArr = [String]()
     static let sharedObj = DBWrapper()
      
+    //MARK: METHOD TO SET DB PATH
     func getDatabasePath()->String
      {
          let docDir = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
@@ -24,8 +26,7 @@ class DBWrapper: NSObject {
          return path+"/DVTWeatherDatabase.sqlite"
      }
      
-    
-     
+    //MARK: EXECUTE QUERIES METHOD
      func executeQuery(query: String)->Bool
      {
          var success = false
@@ -61,10 +62,9 @@ class DBWrapper: NSObject {
          
          
          return success
-         
      }
      
-     
+     //MARK: SELECT COLUMNS METHOD
      func selectAllTask(query:String)->Array<Any>
      {
          nameArr = [String]()
@@ -111,6 +111,7 @@ class DBWrapper: NSObject {
          
      }
      
+    //MARK: CREATE TABLE METHOD
      func createTable()
      {
          let createQuery = "create Table if not exists FavLocations(name text, lat text, lon text)"

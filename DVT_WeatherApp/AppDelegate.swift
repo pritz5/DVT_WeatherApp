@@ -19,8 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
        
         DBWrapper.sharedObj.createTable()
-        GMSPlacesClient.provideAPIKey("AIzaSyAjBFwLFydP_CGHU3w_9tNSDScqeSu5UyQ")//("AIzaSyAjBFwLFydP_CGHU3w_9tNSDScqeSu5UyQ")
-        GMSServices.provideAPIKey("AIzaSyAjBFwLFydP_CGHU3w_9tNSDScqeSu5UyQ")//("AIzaSyDf3W8h-V5lAHoFEnd09aWOJsrqe5q3HCk")
+        //TO AVAIL THE GOOGLE PLACES FEATURE PLEASE ENTER A PAID GOOGLE API KEY BELOW
+        GMSPlacesClient.provideAPIKey("ENTER PAID API KEY")//Please enter a 'Paid' Google API Key
+        GMSServices.provideAPIKey("ENTER PAID API KEY")//Please enter a 'Paid' Google API Key
         return true
     }
 

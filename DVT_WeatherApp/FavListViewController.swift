@@ -8,24 +8,33 @@
 
 import UIKit
 
-class FavListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, reloadVC {
+class FavListViewController: UIViewController, reloadVC {
 
+    //MARK: IB OUTLETS
     @IBOutlet var favListTableView: UITableView!
+    @IBOutlet var favLbl: UILabel!
     
+    //MARK: VARIABLES
     var favName = [String]()
     var latArr = [String]()
     var lonArr = [String]()
-    let color: UIColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.4)
+    var index = Int()
+    var weather = String()
+    let color: UIColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
     
+    //MARK: INITIALIZATION METHODS
     override func viewDidLoad() {
         super.viewDidLoad()
         initialize()
         // Do any additional setup after loading the view.
     }
+    
     func initialize(){
         favListTableView.register(UINib(nibName: "FavListTableViewCell", bundle: nil), forCellReuseIdentifier: "cell")
         
         self.view.backgroundColor = color
+        favLbl.backgroundColor = UIColor.clear
+        favLbl.textColor = UIColor.white
         let selectQuery = "select name,lat,lon from FavLocations"
         let selectAll = DBWrapper.sharedObj.selectAllTask(query:selectQuery)
         favName = (selectAll as? [String])!
@@ -39,144 +48,78 @@ class FavListViewController: UIViewController, UITableViewDelegate, UITableViewD
         favListTableView.backgroundColor = UIColor.clear
     }
     
-    enum JsonErrors:String,Error{
-        
-        case DataError = "Data not Found"
-        case ConversionError = "Converson Failed"
+    
+    //MARK: SEGUE METHOD
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showFav"{
+            let vc = segue.destination as! ViewController
+            let index = (sender as! IndexPath).row
+            vc.lat = Double(latArr[index])!
+            vc.lon = Double(lonArr[index])!
+            vc.placeName = favName[index]
+        }
     }
     
-    func parseJSON(lat: Float, lon: Float)->String{
-        let str =  "https://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(lon)&appid=f99685d69f7533902651025577c79ca8"
-        var weather = String()
-        guard let url = URL(string: str) else
-        {
-            print("End Point Error")
-            return ""
+    //MARK: TOUCH CONTROL METHOD
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch: UITouch? = touches.first
+        //location is relative to the current view
+        // do something with the touched point
+        if touch?.view != favListTableView {
+            self.dismiss(animated: true, completion: nil)
         }
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            do{
-                guard let data = data else
-                {
-                    throw JsonErrors.DataError
-                }
-                guard let outerDic = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:Any] else
-                {
-                    throw JsonErrors.ConversionError
-                }
-                 
-                let weatherArray = outerDic["weather"] as! [[String: Any]]
-                let dict0 = weatherArray[0]
-                let main = dict0["main"] as! String
-                print(main)
-                DispatchQueue.main.async
-                {
-                    if main.contains("Cloud"){
-                        weather = "CLOUDY"
-                    }
-                    else if main.contains("Rain"){
-                        weather = "RAINY"
-                    }
-                    else{
-                        weather = "SUNNY"
-                    }
-                }
-               
-            }
-            catch let error as JsonErrors
-            {
-                print(error.rawValue)
-            }
-            catch let error as NSError
-            {
-                print(error.localizedDescription)
-            }
-            }.resume()
-        return weather
     }
+    
+    //MARK: PROTOCOL METHOD
+    func reload(){
+        DispatchQueue.main.async {
+            self.initialize()
+            self.favListTableView.reloadData()
+        }
+    }
+    
+}
+
+//MARK: TABLEVIEW DELEGATE AND DATASOURCE METHODS
+extension FavListViewController: UITableViewDataSource, UITableViewDelegate{
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return favName.count+1
+        return favName.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! FavListTableViewCell
-        
-        if indexPath.row == 0{
-            cell.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
-            cell.deleteBtn.isHidden = true
-            cell.nameLbl.frame = CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height)
-            cell.nameLbl.translatesAutoresizingMaskIntoConstraints = true
-            cell.nameLbl.text = "FAVOURITES"
-            cell.nameLbl.textAlignment = .center
-            cell.nameLbl.backgroundColor = UIColor.clear
-            cell.nameLbl.textColor = UIColor.white
-            cell.nameLbl.textAlignment = .center
-            cell.nameLbl.font = cell.nameLbl.font.withSize(20)
-        }
-        else{
-            cell.nameLbl.text = favName[indexPath.row-1]
-            cell.nameLbl.textAlignment = .left
-            cell.nameLbl.textColor = UIColor.white
-            cell.deleteBtn.backgroundColor = UIColor.clear
-            cell.deleteBtn.tag = indexPath.row-1
-            let weather = parseJSON(lat: Float(latArr[indexPath.row-1])!, lon: Float(lonArr[indexPath.row-1])!)
-            if weather == "CLOUDY"
-            {
-                cell.backgroundColor = cloudyColor
-            }
-            else if weather == "RAINY"{
-                cell.backgroundColor = rainyColor
-            }
-            else
-            {
-                cell.backgroundColor = sunnyColor
-            }
-            
-        }
-        
-        tableView.tableFooterView = UIView()
+        cell.backgroundColor = UIColor.clear
+        cell.delegateCustom = self
+        cell.cellBGView.layer.cornerRadius = 10
+        cell.cellBGView.layer.masksToBounds = true
+        cell.cellBGView.layer.maskedCorners = [.layerMaxXMaxYCorner,.layerMaxXMinYCorner,.layerMinXMaxYCorner,.layerMinXMinYCorner]
+        cell.cellBGView.layer.borderColor = UIColor.clear.cgColor
+        cell.cellBGView.layer.borderWidth = 1
+        cell.nameLbl.text = "  \(favName[indexPath.row])"
+        cell.nameLbl.textAlignment = .left
+        cell.nameLbl.textColor = UIColor.black
+        cell.deleteBtn.backgroundColor = UIColor.clear
+        cell.deleteBtn.tag = indexPath.row
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        self.performSegue(withIdentifier: "showFav", sender: indexPath.row)
-        
+        tableView.deselectRow(at: indexPath, animated: true)
+        self.performSegue(withIdentifier: "showFav", sender: indexPath)
     }
     
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touch: UITouch? = touches.first
-        //location is relative to the current view
-        // do something with the touched point
-        if touch?.view != favListTableView {
-            //performSegue(withIdentifier: "showFav", sender: nil)
-            self.dismiss(animated: true, completion: nil)
-        }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
     }
     
-    func reload(){
-        initialize()
-        favListTableView.reloadData()
-    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
+//MARK: PROTOCOL TO RELOAD FAV LIST VC
 protocol reloadVC {
     func reload();
 }

@@ -184,7 +184,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cqj-Kg-fjq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <exit id="Hne-32-Lsq" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2336.231884057971" y="-1583.1521739130435"/>
         </scene>
@@ -373,7 +372,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ori-Qw-Rz5">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ori-Qw-Rz5">
                                 <rect key="frame" x="50" y="200" width="314" height="336"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <connections>
@@ -381,10 +380,22 @@
                                     <outlet property="delegate" destination="kHq-G2-9zZ" id="YNI-Rn-bWH"/>
                                 </connections>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FAVOURITES" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YUd-cd-qWK">
+                                <rect key="frame" x="132" y="150" width="150" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="Hgd-60-nAO"/>
+                                    <constraint firstAttribute="height" constant="50" id="qrw-rJ-31a"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="22"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="ori-Qw-Rz5" firstAttribute="leading" secondItem="bL3-rf-w0O" secondAttribute="leading" constant="50" id="13b-XM-3VT"/>
+                            <constraint firstItem="YUd-cd-qWK" firstAttribute="centerX" secondItem="bL3-rf-w0O" secondAttribute="centerX" id="7Ar-z7-wjg"/>
+                            <constraint firstItem="ori-Qw-Rz5" firstAttribute="top" secondItem="YUd-cd-qWK" secondAttribute="bottom" id="Efl-jP-ozf"/>
                             <constraint firstItem="bL3-rf-w0O" firstAttribute="trailing" secondItem="ori-Qw-Rz5" secondAttribute="trailing" constant="50" id="brJ-6u-C8c"/>
                             <constraint firstItem="ori-Qw-Rz5" firstAttribute="top" secondItem="bL3-rf-w0O" secondAttribute="top" constant="200" id="ntY-Eu-ZqW"/>
                             <constraint firstItem="bL3-rf-w0O" firstAttribute="bottom" secondItem="ori-Qw-Rz5" secondAttribute="bottom" constant="200" id="xQR-B1-zdE"/>
@@ -392,13 +403,15 @@
                         <viewLayoutGuide key="safeArea" id="bL3-rf-w0O"/>
                     </view>
                     <connections>
+                        <outlet property="favLbl" destination="YUd-cd-qWK" id="qO2-Rt-Oop"/>
                         <outlet property="favListTableView" destination="ori-Qw-Rz5" id="vEN-vJ-T3W"/>
-                        <segue destination="Hne-32-Lsq" kind="unwind" identifier="showFav" unwindAction="unwindFromFavList:sender:" id="dnz-E4-4q9"/>
+                        <segue destination="joO-1c-Y58" kind="unwind" identifier="showFav" unwindAction="unwindFromFavList:" id="hLy-41-h5Q"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TXs-Eg-FmL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="joO-1c-Y58" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2335" y="-913"/>
+            <point key="canvasLocation" x="2335" y="-2313"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Idp-dO-fTp">

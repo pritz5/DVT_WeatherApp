@@ -11,14 +11,14 @@ import CoreLocation
 import Network
 import Reachability
 
-
+//MARK: GLOBAL VARIABLES
 let cloudyColor = UIColor(red: 84/255, green: 113/255, blue: 122/255, alpha: 1)
 let rainyColor = UIColor(red: 87/255, green: 87/255, blue: 93/255, alpha: 1)
 let sunnyColor = UIColor(red: 71/255, green: 171/255, blue: 47/255, alpha: 1)
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
+class ViewController: UIViewController, CLLocationManagerDelegate {
     
-    
+    //MARK: IB OUTLETS
     @IBOutlet weak var weatherImg: UIImageView!
     @IBOutlet weak var weatherTempView: UIView!
     @IBOutlet weak var tempLbl: UILabel!
@@ -33,6 +33,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var favsBtn: UIButton!
     var checkInternetBtn = UIButton()
     
+    //MARK: VARIABLES
     let locationManager = CLLocationManager()
     let monitor = NWPathMonitor()
     var currentcheck = 0
@@ -43,6 +44,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var dayArr = [String]()
     var placeName = "CURRENT"
     
+    //MARK: INITIALIZATION METHODS
     override func viewDidLoad() {
         super.viewDidLoad()
         forecastTableView.register(UINib(nibName: "ForecastTableViewCell", bundle: nil), forCellReuseIdentifier: "cell")
@@ -103,6 +105,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         favsBtn.layer.cornerRadius = 20
     }
     
+    //MARK: ACTION METHODS
     @IBAction func addFavBtnActn(_ sender: UIButton) {
         let mapVC = storyboard?.instantiateViewController(identifier: "mapView") as! MapViewController
         mapVC.currentLat = lat
@@ -126,9 +129,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.viewWillAppear(true)
     }
     
+    @IBAction func unwindFromFavList(_ segue: UIStoryboardSegue){
+        print("in segue")
+        weatherTypeArr.removeAll()
+        parseJSONcurrent()
+        parseJSONFiveDayForecast()
+    }
+    
+    //MARK: NORMAL METHODS
     func currentLoc()
     {
         weatherTypeArr.removeAll()
+        placeName = "CURRENT"
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         if checkInterwebs(){
             if CLLocationManager.locationServicesEnabled(){
@@ -351,20 +363,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             }.resume()
     }
     
-    @IBAction func unwindFromFavList(_ segue: UIStoryboardSegue, sender: Int){
-        if segue.identifier == "showFav"{
-            print("In segue")
-            let vc = segue.source as! FavListViewController
-            lat = Double(vc.latArr[sender])!
-            lon = Double(vc.lonArr[sender])!
-            placeName = vc.favName[sender]
-            weatherTypeArr.removeAll()
-            parseJSONcurrent()
-            parseJSONFiveDayForecast()
-        }
-        print("in segue")
-    }
-    
+    //MARK: LOCATION DFELEGATE METHOD
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations.last! as CLLocation
         lat = location.coordinate.latitude
@@ -372,6 +371,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         placeName = "CURRENT"
         locationManager.stopUpdatingLocation()
     }
+    
+}
+
+//MARK: TABLEVIEW DELEGATE AND DATASOURCE METHODS
+extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1

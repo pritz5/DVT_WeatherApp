@@ -14,8 +14,7 @@ import CoreLocation
 
 class MapViewController: UIViewController, GMSMapViewDelegate, UISearchBarDelegate, UITextFieldDelegate{
 
-    
-    
+    //MARK: IB OUTLETS
     @IBOutlet var mySearchBar: UISearchBar!
     @IBOutlet weak var saveFavView: UIView!
     @IBOutlet weak var nameTagLbl: UILabel!
@@ -31,6 +30,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate, UISearchBarDelega
     @objc var addFavBtn = UIButton()
     var mapView = GMSMapView()
     
+    //MARK: VARIABLES
     var marker = GMSMarker()
     var locationManager = CLLocationManager()
     var mapLat = 0.0
@@ -39,6 +39,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate, UISearchBarDelega
     var currentLon = 0.0
     var address = String()
     
+    //MARK: INITIALIZATION METHODS
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = false
@@ -109,6 +110,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate, UISearchBarDelega
         showMarkers(lat: currentLat, lon: currentLon, current: true, title: "Current Location")
     }
     
+    //MARK: ACTION METHODS
     @objc func addFavBtnActn(){
         if mapLat != 0.0 && mapLon != 0.0{
             parseJSON()
@@ -159,6 +161,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate, UISearchBarDelega
         mapView.delegate = self
     }
     
+    //MARK: KEYBOARD METHODS TO TOGGLE VIEW ABOVE KEYBOARD
     @objc func keyboardWillHide() {
         self.saveFavView.frame.origin.y = self.view.frame.height-240
         
@@ -175,21 +178,47 @@ class MapViewController: UIViewController, GMSMapViewDelegate, UISearchBarDelega
         }
     }
     
-    
+    //MARK: TEXTFIELD DELEGATE METHOD
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
     }
     
-    func showAlert(title: String, message: String){
+    //MARK: SEARCHBAR DELEGTE METHOD
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = true
         
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let ok = UIAlertAction(title: "OK", style: .default) { (ok) in
-            //
-        }
-        alert.addAction(ok)
-        self.present(alert, animated: true, completion: nil)
+        let autocompleteController = GMSAutocompleteViewController()    //To search places
+        autocompleteController.delegate = self
+        
+        autocompleteController.tableCellBackgroundColor = UIColor.white
+        autocompleteController.primaryTextColor = UIColor.lightGray
+        autocompleteController.primaryTextHighlightColor = UIColor.black
+        autocompleteController.secondaryTextColor = UIColor.lightGray
+       
+        let filter = GMSAutocompleteFilter()
+        //filter.country = "IN"
+        autocompleteController.autocompleteFilter = filter
+        
+        self.present(autocompleteController, animated: true, completion: nil)
     }
     
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        self.mySearchBar.endEditing(true)
+        searchBar.resignFirstResponder()
+        searchBar.showsCancelButton = false
+    }
+    
+    //MARK: MAPVIEW DELEGATE METHOD
+    func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
+        mapView.clear()
+        mapLat = coordinate.latitude
+        mapLon = coordinate.longitude
+        showMarkers(lat: currentLat, lon: currentLon, current: true, title: "Current Location")
+        showMarkers(lat: mapLat, lon: mapLon, current: false, title: getAddress())
+        
+    }
+    
+    //MARK: NORMAL METHODS
     enum JsonErrors:String,Error{
         
         case DataError = "Data not Found"
@@ -256,39 +285,16 @@ class MapViewController: UIViewController, GMSMapViewDelegate, UISearchBarDelega
             }.resume()
     }
     
-    
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchBar.showsCancelButton = true
+    func showAlert(title: String, message: String){
         
-        let autocompleteController = GMSAutocompleteViewController()    //To search places
-        autocompleteController.delegate = self
-        
-        autocompleteController.tableCellBackgroundColor = UIColor.white
-        autocompleteController.primaryTextColor = UIColor.lightGray
-        autocompleteController.primaryTextHighlightColor = UIColor.black
-        autocompleteController.secondaryTextColor = UIColor.lightGray
-       
-        let filter = GMSAutocompleteFilter()
-        filter.country = "IN"
-        autocompleteController.autocompleteFilter = filter
-        
-        self.present(autocompleteController, animated: true, completion: nil)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let ok = UIAlertAction(title: "OK", style: .default) { (ok) in
+            //
+        }
+        alert.addAction(ok)
+        self.present(alert, animated: true, completion: nil)
     }
     
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        self.mySearchBar.endEditing(true)
-        searchBar.resignFirstResponder()
-        searchBar.showsCancelButton = false
-    }
-    
-    func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
-        mapView.clear()
-        mapLat = coordinate.latitude
-        mapLon = coordinate.longitude
-        showMarkers(lat: currentLat, lon: currentLon, current: true, title: "Current Location")
-        showMarkers(lat: mapLat, lon: mapLon, current: false, title: getAddress())
-        
-    }
     
     func showMarkers(lat: Double, lon: Double, current: Bool, title: String){
         self.LocInpLbl.text = self.address
@@ -368,7 +374,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate, UISearchBarDelega
     
 }
 
-
+//MARK: GMS AUTOCOMPLETE VC METHODS
 extension MapViewController: GMSAutocompleteViewControllerDelegate {
     
     // Handle the user's selection.

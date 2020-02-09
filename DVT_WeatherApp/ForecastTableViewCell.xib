@@ -19,14 +19,14 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gam-LH-6dw">
                         <rect key="frame" x="0.0" y="0.0" width="669" height="118"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="70" translatesAutoresizingMaskIntoConstraints="NO" id="ccY-f1-XxD">
-                                <rect key="frame" x="170" y="0.0" width="499" height="118"/>
+                            <stackView opaque="NO" contentMode="scaleAspectFit" distribution="fillEqually" spacing="60" translatesAutoresizingMaskIntoConstraints="NO" id="ccY-f1-XxD">
+                                <rect key="frame" x="150" y="0.0" width="519" height="118"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IAy-eH-DtO">
-                                        <rect key="frame" x="0.0" y="0.0" width="214.5" height="118"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="229.5" height="118"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Qi-hG-GTB">
-                                        <rect key="frame" x="284.5" y="0.0" width="214.5" height="118"/>
+                                        <rect key="frame" x="289.5" y="0.0" width="229.5" height="118"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="d6h-y3-l22"/>
                                         </constraints>
@@ -50,7 +50,7 @@
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="aBy-m1-t1z" secondAttribute="bottom" id="E6m-um-gP2"/>
                             <constraint firstItem="ccY-f1-XxD" firstAttribute="top" secondItem="gam-LH-6dw" secondAttribute="top" id="NX6-NC-XeQ"/>
-                            <constraint firstItem="ccY-f1-XxD" firstAttribute="leading" secondItem="aBy-m1-t1z" secondAttribute="trailing" constant="20" id="Sqv-1S-uup"/>
+                            <constraint firstItem="ccY-f1-XxD" firstAttribute="leading" secondItem="aBy-m1-t1z" secondAttribute="trailing" id="Sqv-1S-uup"/>
                             <constraint firstItem="aBy-m1-t1z" firstAttribute="top" secondItem="gam-LH-6dw" secondAttribute="top" id="WZX-tm-Dhk"/>
                             <constraint firstAttribute="trailing" secondItem="ccY-f1-XxD" secondAttribute="trailing" id="Z0y-sU-kAH"/>
                             <constraint firstItem="aBy-m1-t1z" firstAttribute="leading" secondItem="gam-LH-6dw" secondAttribute="leading" constant="20" id="ZdY-E9-HOX"/>

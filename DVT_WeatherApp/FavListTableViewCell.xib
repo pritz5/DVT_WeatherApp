@@ -16,42 +16,55 @@
                 <rect key="frame" x="0.0" y="0.0" width="346" height="82"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3y7-6A-sRi">
-                        <rect key="frame" x="10" y="5" width="256" height="72"/>
-                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0dD-qf-CS3">
-                        <rect key="frame" x="276" y="5" width="60" height="72"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5yw-U0-sWv">
+                        <rect key="frame" x="5" y="5" width="336" height="72"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3y7-6A-sRi">
+                                <rect key="frame" x="0.0" y="0.0" width="276" height="72"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0dD-qf-CS3">
+                                <rect key="frame" x="276" y="0.0" width="60" height="72"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="PQk-7X-KZG"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="15"/>
+                                <state key="normal" title="DELETE">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="deleteActn:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="HgI-z3-F0R"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="60" id="PKu-ma-a3k"/>
+                            <constraint firstItem="3y7-6A-sRi" firstAttribute="top" secondItem="5yw-U0-sWv" secondAttribute="top" id="AMF-Dx-4fj"/>
+                            <constraint firstItem="0dD-qf-CS3" firstAttribute="top" secondItem="5yw-U0-sWv" secondAttribute="top" id="KTs-pR-2v7"/>
+                            <constraint firstAttribute="bottom" secondItem="0dD-qf-CS3" secondAttribute="bottom" id="OPB-A2-Wya"/>
+                            <constraint firstAttribute="bottom" secondItem="3y7-6A-sRi" secondAttribute="bottom" id="VyN-uA-4uR"/>
+                            <constraint firstItem="0dD-qf-CS3" firstAttribute="leading" secondItem="3y7-6A-sRi" secondAttribute="trailing" id="bKV-vu-Bb9"/>
+                            <constraint firstAttribute="trailing" secondItem="0dD-qf-CS3" secondAttribute="trailing" id="ccy-PU-oYt"/>
+                            <constraint firstItem="3y7-6A-sRi" firstAttribute="leading" secondItem="5yw-U0-sWv" secondAttribute="leading" id="fJ1-vv-eeD"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" weight="thin" pointSize="15"/>
-                        <state key="normal" title="DELETE">
-                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </state>
-                        <connections>
-                            <action selector="deleteActn:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="HgI-z3-F0R"/>
-                        </connections>
-                    </button>
+                    </view>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="3y7-6A-sRi" secondAttribute="bottom" constant="5" id="4ZI-5u-xNs"/>
-                    <constraint firstAttribute="trailing" secondItem="0dD-qf-CS3" secondAttribute="trailing" constant="10" id="HUg-QR-eNP"/>
-                    <constraint firstItem="3y7-6A-sRi" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="K0M-Oc-aMM"/>
-                    <constraint firstItem="3y7-6A-sRi" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="Kbi-bb-VLb"/>
-                    <constraint firstItem="0dD-qf-CS3" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="VZ7-mW-MoL"/>
-                    <constraint firstItem="0dD-qf-CS3" firstAttribute="leading" secondItem="3y7-6A-sRi" secondAttribute="trailing" constant="10" id="m73-Il-4DO"/>
-                    <constraint firstAttribute="bottom" secondItem="0dD-qf-CS3" secondAttribute="bottom" constant="5" id="xjt-bB-Nuk"/>
+                    <constraint firstAttribute="trailing" secondItem="5yw-U0-sWv" secondAttribute="trailing" constant="5" id="C4o-Pf-egB"/>
+                    <constraint firstItem="5yw-U0-sWv" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="MZv-F4-Enl"/>
+                    <constraint firstAttribute="bottom" secondItem="5yw-U0-sWv" secondAttribute="bottom" constant="5" id="YWZ-N4-g8h"/>
+                    <constraint firstItem="5yw-U0-sWv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="moV-PN-hAA"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="cellBGView" destination="5yw-U0-sWv" id="IyI-gq-oHb"/>
                 <outlet property="deleteBtn" destination="0dD-qf-CS3" id="DkY-A5-mN0"/>
                 <outlet property="nameLbl" destination="3y7-6A-sRi" id="Hxd-tN-ANj"/>
             </connections>
-            <point key="canvasLocation" x="156.52173913043478" y="116.51785714285714"/>
+            <point key="canvasLocation" x="155.07246376811597" y="116.51785714285714"/>
         </tableViewCell>
     </objects>
 </document>
